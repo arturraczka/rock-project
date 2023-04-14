@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lobby</title>
+</head>
+<body>
+    <h1>Let's chat</h1>
+
+    <button id="button1" data-option="rock" class="option rock">ROCK</button>
+    <button id="button2" data-option="paper" class="option rock">PAPER</button>
+    <button id="button3" data-option="scissors" class="option rock">SCISSORS</button>
+
+    <div id="choices"></div>
+
+    <script type="text/javascript">
+        let url = 'ws://localhost:8000/ws/socket-server/'
+
+        const chatSocket = new WebSocket(url)
+
+        chatSocket.onmessage = function(event){
+            let data = JSON.parse(event.data)
+            console.log('Data:', data)
+
+            if(data.type === 'choice'){
+                let choices = document.getElementById('choices')
+
+                choices.insertAdjacentHTML('beforeend', 
+                    `<div>
+                        <p>${data.playerChoice}</p>
+                    </div>`
+                )
+            }
+        }
+
+        let button1 = document.getElementById('button1')
+        button1.addEventListener('click', (event) => {
+            event.preventDefault()
+            let playerChoice = event.target.dataset.option
+            chatSocket.send(JSON.stringify({
+                'playerChoice': playerChoice
+            }))
+        })
+        let button2 = document.getElementById('button2')
+        button2.addEventListener('click', (event) => {
+            event.preventDefault()
+            let playerChoice = event.target.dataset.option
+            chatSocket.send(JSON.stringify({
+                'playerChoice': playerChoice
+            }))
+        })
+        let button3 = document.getElementById('button3')
+        button3.addEventListener('click', (event) => {
+            event.preventDefault()
+            let playerChoice = event.target.dataset.option
+            chatSocket.send(JSON.stringify({
+                'playerChoice': playerChoice
+            }))
+        })
+
+
+
+    </script>
+</body>
+</html>
